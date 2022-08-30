@@ -3,7 +3,7 @@
 
 #define PI 3.141592653589793
 
-double gaussianCDF(double x, double mean, double standardDev)
+double gaussianCDF(double mean, double standardDev, double x)
 {
   double phi, result, z, denominator = 1,
                          sum = 0;

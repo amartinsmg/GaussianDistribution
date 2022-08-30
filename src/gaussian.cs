@@ -5,7 +5,7 @@ namespace Calc
 {
   class Gasussian
   {
-    static double GasussianCDF(double x, double mean, double standardDev)
+    static double GasussianCDF(double mean, double standardDev, double x)
     {
       double phi, result, z, denominator = 1,
         sum = 0;

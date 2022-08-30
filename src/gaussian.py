@@ -2,7 +2,7 @@
 from math import exp, pi, sqrt
 
 
-def gaussianCDF(x, mean, standardDev):
+def gaussianCDF(mean, standardDev, x):
     denominator = 1
     sum = 0
     assert standardDev > 0

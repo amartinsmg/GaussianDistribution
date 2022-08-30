@@ -1,6 +1,6 @@
 <?php
 
-function gaussianCDF($x, $mean, $standardDev)
+function gaussianCDF($mean, $standardDev, $x)
 {
   $denominator = 1;
   $sum = 0;

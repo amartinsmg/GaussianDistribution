@@ -1,6 +1,6 @@
 const assert = require("assert");
 
-function gaussianCDF(x, mean, standardDev) {
+function gaussianCDF(mean, standardDev, x) {
   let phi,
     result,
     z,
