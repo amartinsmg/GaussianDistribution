@@ -16,7 +16,7 @@ int main(int argc, char **argv)
   exitCode = sqlite3_open(databasePath, &db);
   if (exitCode)
   {
-    fprintf(stderr, "%s\n", errMsg);
+    fprintf(stderr, "Connection to database failed\n");
     exit(-1);
   }
   exitCode = sqlite3_exec(db, "DROP TABLE IF EXISTS c_serial; CREATE TABLE c_serial(id INTEGER PRIMARY KEY "
