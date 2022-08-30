@@ -8,10 +8,10 @@ dir:
 	[ -d build ] || mkdir build
 
 c_sqlite_serial: dir
-	$(CC) -o build/c_sqlite_serial $(IncludeSQLite_path) $(LibSQLite_path) src/sqlite_serial.c -lsqlite3
+	$(CC) -o build/c_sqlite_serial $(IncludeSQLite_path) $(LibSQLite_path) src/c/sqlite_serial.c -lsqlite3
 	
 c_sqlite_block: dir
-	$(CC) -o build/c_sqlite_block $(IncludeSQLite_path) $(LibSQLite_path) src/sqlite_block.c -lsqlite3
+	$(CC) -o build/c_sqlite_block $(IncludeSQLite_path) $(LibSQLite_path) src/c/sqlite_block.c -lsqlite3
 	
 clean:
 	rm -rf build/*

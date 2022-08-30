@@ -1,0 +1,19 @@
+{
+  "name": "gaussiandistribution",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amartinsmg/GaussianDistribution.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amartinsmg/GaussianDistribution/issues"
+  },
+  "homepage": "https://github.com/amartinsmg/GaussianDistribution#readme",
+  "dependencies": {
+    "sqlite3": "^5.0.11"
+  }
+}

@@ -17,6 +17,6 @@ function gaussianCDF(mean, standardDev, x) {
   return result;
 }
 
-module.exports({
+module.exports = {
   gaussianCDF,
-});
+};

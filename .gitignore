@@ -1,6 +1,8 @@
 .vscode
+__pycache__
 build
 data
 include
 libs
+node_modules
 *.db
