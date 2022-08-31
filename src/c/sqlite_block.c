@@ -11,7 +11,7 @@ int main(int argc, char **argv)
       buffer = 0;
   double x, cumulativeD;
   char databasePath[300],
-      *query = (char *)malloc(88000 * (*query)),
+      *query = (char *)malloc(90000 * sizeof(*query)),
       *errMsg = NULL;
   sprintf(databasePath, "%s/../sqlite/database.db", argc ? dirname(argv[0]) : ".");
   exitCode = sqlite3_open(databasePath, &db);

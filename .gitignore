@@ -2,6 +2,7 @@
 __pycache__
 build
 data
+dotnetProj
 include
 libs
 node_modules

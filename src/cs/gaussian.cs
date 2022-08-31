@@ -3,9 +3,9 @@ using System.Diagnostics;
 
 namespace Calc
 {
-  class Gasussian
+  class Gaussian
   {
-    static double GasussianCDF(double mean, double standardDev, double x)
+    public static double GaussianCDF(double mean, double standardDev, double x)
     {
       double phi, result, z, denominator = 1,
         sum = 0;
