@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTPUT=$(echo $1 | sed 's/src\/cs\//cs_/g;s/\.cs//g')
+OUTPUT=$(echo $1 | sed 's/src\/cs\//build\/cs_/g;s/\.cs/\.exe/g')
 
 if [ ! -d dotnetProj ]
 then
@@ -20,4 +20,4 @@ dotnet publish -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesFor
 
 cd ..
 
-mv build/dotnetProj.exe "build/$OUTPUT.exe"
+mv build/dotnetProj.exe $OUTPUT
