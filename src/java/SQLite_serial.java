@@ -6,7 +6,7 @@ public class SQLite_serial {
   public static void main(String[] args) {
     String databasePath = "jdbc:sqlite:" + new File(
         SQLite_serial.class.getProtectionDomain().getCodeSource().getLocation().getPath().toString()).getParent()
-        + "\\..\\..\\sqlite\\database.db";
+        + "\\..\\sqlite\\database.db";
     int i;
     double x, cumulativeD;
     Locale.setDefault(new Locale("en", "US"));
