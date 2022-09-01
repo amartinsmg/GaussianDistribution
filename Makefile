@@ -20,10 +20,10 @@ cs_sqlite_block: dir
 	compile_cs.sh src/cs/sqlite_block.cs
 
 java_sqlite_serial: dir
-	compile_java.sh src/java/SQLite_serial.java
+	compile_java.sh --sqlite src/java/SQLite_serial.java
 
 java_sqlite_block: dir
-	compile_java.sh src/java/SQLite_block.java
+	compile_java.sh --sqlite src/java/SQLite_block.java
 
 clean:
 	rm -rf build/*
