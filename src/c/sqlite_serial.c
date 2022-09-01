@@ -32,7 +32,12 @@ int main(int argc, char **argv)
     x = (double)i / 100.0;
     cumulativeD = gaussianCDF(0, 1, x);
     sprintf(query, "INSERT INTO c_serial(z_score, cumulative_distribution) VALUES (%.2f, %f)", x, cumulativeD);
-    sqlite3_exec(db, query, 0, 0, &errMsg);
+    exitCode = sqlite3_exec(db, query, 0, 0, &errMsg);
+    if (exitCode)
+    {
+      fprintf(stderr, "%s\n", errMsg);
+      exit(-1);
+    }
   }
   sqlite3_close(db);
   return 0;
