@@ -1,12 +1,11 @@
 const { gaussianCDF } = require("./gaussian"),
-  path = require("path"),
   sqlite3 = require("sqlite3").verbose(),
   callback = function (err) {
     if (err) console.log(err.message);
   };
 
 let query = "",
-  databasePath = path.resolve(__dirname, "../../sqlite/database.db"),
+  databasePath = __dirname + "/../../sqlite/database.db",
   db = new sqlite3.Database(databasePath, callback);
 
 db.exec(
