@@ -8,13 +8,15 @@ namespace Calc
   {
     static void Main(string[] Args)
     {
+      SQLiteConnection conn;
+      SQLiteCommand cmd;
       string databasePath = AppDomain.CurrentDomain.BaseDirectory + "../sqlite/database.db";
       int i;
       double x, cumulativeD;
-      var db = new SQLiteConnection($"URI=file:{databasePath}");
-      db.Open();
-      var cmd = new SQLiteCommand(db);
+      conn = new SQLiteConnection($"URI=file:{databasePath}");
       CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+      conn.Open();
+      cmd = new SQLiteCommand(conn);
       cmd.CommandText = "DROP TABLE IF EXISTS cs_serial; CREATE TABLE cs_serial(id INTEGER PRIMARY KEY " +
       "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)";
       cmd.ExecuteNonQuery();
@@ -25,7 +27,7 @@ namespace Calc
         cmd.CommandText = $"INSERT INTO cs_serial(z_score, cumulative_distribution) VALUES ({x:0.00}, {cumulativeD:0.000000});";
         cmd.ExecuteNonQuery();
       }
-      db.Close();
+      conn.Close();
     }
   }
 }

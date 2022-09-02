@@ -6,9 +6,9 @@ const { gaussianCDF } = require("./gaussian"),
 
 let query = "",
   databasePath = __dirname + "/../../sqlite/database.db",
-  db = new sqlite3.Database(databasePath, callback);
+  conn = new sqlite3.Database(databasePath, callback);
 
-db.exec(
+conn.exec(
   "DROP TABLE IF EXISTS js_block; CREATE TABLE js_block(id INTEGER PRIMARY KEY " +
     "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);",
   callback
@@ -22,6 +22,6 @@ for (let i = -500; i <= 500; i++) {
   )});`;
 }
 
-db.exec(query, callback);
+conn.exec(query, callback);
 
-db.close();
+conn.close();

@@ -4,8 +4,8 @@ import sqlite3
 
 databasePath = os.path.dirname(__file__) + '/../../sqlite/database.db'
 query = ''
-db = sqlite3.connect(databasePath)
-db.executescript('''DROP TABLE IF EXISTS py_block; CREATE TABLE py_block(id INTEGER PRIMARY KEY
+conn = sqlite3.connect(databasePath)
+conn.executescript('''DROP TABLE IF EXISTS py_block; CREATE TABLE py_block(id INTEGER PRIMARY KEY
 AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);''')
 
 for i in range(-500, 501):
@@ -13,6 +13,6 @@ for i in range(-500, 501):
 	cumulativeD = gaussianCDF(0, 1, x)
 	query += f'INSERT INTO py_block(z_score, cumulative_distribution) VALUES ({x:.2f}, {cumulativeD:.6f});'
 
-db.executescript(query)
-db.commit()
-db.close()
+conn.executescript(query)
+conn.commit()
+conn.close()

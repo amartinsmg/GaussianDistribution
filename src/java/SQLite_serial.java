@@ -4,6 +4,8 @@ import java.util.Locale;
 
 public class SQLite_serial {
   public static void main(String[] args) {
+    Connection conn;
+    Statement stmt;
     String databasePath = "jdbc:sqlite:" + new File(
         SQLite_serial.class.getProtectionDomain().getCodeSource().getLocation().getPath().toString()).getParent()
         + "\\..\\sqlite\\database.db";
@@ -11,8 +13,8 @@ public class SQLite_serial {
     double x, cumulativeD;
     Locale.setDefault(new Locale("en", "US"));
     try {
-      Connection db = DriverManager.getConnection(databasePath);
-      Statement stmt = db.createStatement();
+      conn = DriverManager.getConnection(databasePath);
+      stmt = conn.createStatement();
       stmt.executeUpdate("DROP TABLE IF EXISTS java_serial; CREATE TABLE java_serial(id INTEGER PRIMARY KEY " +
           "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
       for (i = -500; i <= 500; i++) {

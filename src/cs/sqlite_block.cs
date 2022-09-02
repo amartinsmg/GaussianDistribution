@@ -8,14 +8,16 @@ namespace Calc
   {
     static void Main(string[] Args)
     {
+      SQLiteConnection conn;
+      SQLiteCommand cmd;
       string query = "",
         databasePath = AppDomain.CurrentDomain.BaseDirectory + "../sqlite/database.db";
       int i;
       double x, cumulativeD;
-      var db = new SQLiteConnection($"URI=file:{databasePath}");
-      db.Open();
-      var cmd = new SQLiteCommand(db);
       CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+      conn = new SQLiteConnection($"URI=file:{databasePath}");
+      conn.Open();
+      cmd = new SQLiteCommand(conn);
       cmd.CommandText = "DROP TABLE IF EXISTS cs_block; CREATE TABLE cs_block(id INTEGER PRIMARY KEY " +
       "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)";
       cmd.ExecuteNonQuery();
@@ -27,7 +29,7 @@ namespace Calc
       }
       cmd.CommandText = query;
       cmd.ExecuteNonQuery();
-      db.Close();
+      conn.Close();
     }
   }
 }
