@@ -1,0 +1,12 @@
+services:
+  db:
+    container_name: oracledb_container
+    image: oracle/database:21.3.0-xe
+    restart: always
+    environment:
+      ORACLE_PWD: root123
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./data:/opt/oracle/oradata/
+

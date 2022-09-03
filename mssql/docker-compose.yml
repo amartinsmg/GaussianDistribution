@@ -1,0 +1,13 @@
+services:
+  db:
+    container_name: mssql_container
+    build: .
+    restart: always
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: root123%
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./data:/var/opt/mssql/data
+
