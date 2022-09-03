@@ -1,23 +1,25 @@
 #!/bin/bash
 
-OUTPUT=$(echo $1 | sed 's/src\/cs\//build\/cs_/g;s/\.cs/\.exe/g')
+SRC_FILE="`pwd`/$1"
+GAUSSIAN_SRC_FILE="`pwd`/src/cs/gaussian.cs"
+BUILD_DIR="`pwd`/build"
+OUTPUT="$BUILD_DIR/$(echo $1 | sed 's/src\/cs\//\/cs_/g;s/\.cs/\.exe/g')"
+DOTNETPROJ_DIR="`pwd`/dotnetProj"
 
-if [ ! -d dotnetProj ]
+if [ ! -d $DOTNETPROJ_DIR ]
 then
-  mkdir dotnetProj
-  cd dotnetProj
+  mkdir $DOTNETPROJ_DIR
+  cd $DOTNETPROJ_DIR
   dotnet new console
   dotnet add package System.Data.Sqlite
-  cp ../src/cs/gaussian.cs ./
-  cd ..
+  cp $GAUSSIAN_SRC_FILE ./
+else
+  cd $DOTNETPROJ_DIR
 fi
 
-cd dotnetProj
-cp "../$1" ./Program.cs
+cp $SRC_FILE ./Program.cs
 
 dotnet publish -r win-x64 -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true \
--p:DebugType=None -p:DebugSymbols=false --self-contained true -o ../build
+-p:DebugType=None -p:DebugSymbols=false --self-contained true -o $BUILD_DIR
 
-cd ..
-
-mv build/dotnetProj.exe $OUTPUT
+mv "$BUILD_DIR/dotnetProj.exe" $OUTPUT
