@@ -10,10 +10,10 @@ namespace Calc
     {
       SQLiteConnection conn;
       SQLiteCommand cmd;
-      string databasePath = AppDomain.CurrentDomain.BaseDirectory + "../sqlite/database.db";
+      string dbPath = AppDomain.CurrentDomain.BaseDirectory + "../sqlite/database.db";
       int i;
-      double x, cumulativeD;
-      conn = new SQLiteConnection($"URI=file:{databasePath}");
+      double x, prob;
+      conn = new SQLiteConnection($"URI=file:{dbPath}");
       CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
       conn.Open();
       cmd = new SQLiteCommand(conn);
@@ -23,8 +23,8 @@ namespace Calc
       for (i = -500; i <= 500; i++)
       {
         x = (double)i / 100.0;
-        cumulativeD = Gaussian.GaussianCDF(0, 1, x);
-        cmd.CommandText = $"INSERT INTO cs_serial(z_score, cumulative_distribution) VALUES ({x:0.00}, {cumulativeD:0.000000});";
+        prob = Gaussian.GaussianCDF(0, 1, x);
+        cmd.CommandText = $"INSERT INTO cs_serial(z_score, cumulative_distribution) VALUES ({x:0.00}, {prob:0.000000});";
         cmd.ExecuteNonQuery();
       }
       conn.Close();

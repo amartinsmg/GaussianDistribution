@@ -4,8 +4,8 @@ const { gaussianCDF } = require("./gaussian"),
     if (err) console.log(err.message);
   };
 
-let databasePath = __dirname + "/../../sqlite/database.db",
-  conn = new sqlite3.Database(databasePath, callback);
+let dbPath = __dirname + "/../../sqlite/database.db",
+  conn = new sqlite3.Database(dbPath, callback);
 
 conn.exec(
   "DROP TABLE IF EXISTS js_serial; CREATE TABLE js_serial(id INTEGER PRIMARY KEY " +
@@ -15,9 +15,9 @@ conn.exec(
 
 for (let i = -500; i <= 500; i++) {
   let x = i / 100,
-    cumulativeD = gaussianCDF(0, 1, x);
+    prob = gaussianCDF(0, 1, x);
   conn.exec(
-    `INSERT INTO js_serial(z_score, cumulative_distribution) VALUES (${x}, ${cumulativeD.toFixed(
+    `INSERT INTO js_serial(z_score, cumulative_distribution) VALUES (${x}, ${prob.toFixed(
       6
     )});`,
     callback

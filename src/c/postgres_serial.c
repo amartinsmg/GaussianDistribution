@@ -8,7 +8,7 @@ int main(int argc, char **argv)
   PGconn *conn = PQconnectdb("user=root password=root123 dbname=gaussian");
   PGresult *res;
   int i;
-  double x, cumulativeD;
+  double x, prob;
   char query[90];
   if (PQstatus(conn) == CONNECTION_BAD)
   {
@@ -26,8 +26,8 @@ int main(int argc, char **argv)
   for (i = -500; i <= 500; i++)
   {
     x = (double)i / 100.0;
-    cumulativeD = gaussianCDF(0, 1, x);
-    sprintf(query, "INSERT INTO c_serial(z_score, cumulative_distribution) VALUES (%.2f, %f)", x, cumulativeD);
+    prob = gaussianCDF(0, 1, x);
+    sprintf(query, "INSERT INTO c_serial(z_score, cumulative_distribution) VALUES (%.2f, %f)", x, prob);
     res = PQexec(conn, query);
     if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {

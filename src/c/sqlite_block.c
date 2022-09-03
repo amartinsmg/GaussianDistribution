@@ -9,12 +9,12 @@ int main(int argc, char **argv)
   sqlite3 *conn;
   int exitCode, i,
       buffer = 0;
-  double x, cumulativeD;
-  char databasePath[300],
+  double x, prob;
+  char dbPath[300],
       *query = (char *)malloc(90000 * sizeof(*query)),
       *errMsg = NULL;
-  sprintf(databasePath, "%s/../sqlite/database.db", argc ? dirname(argv[0]) : ".");
-  exitCode = sqlite3_open(databasePath, &conn);
+  sprintf(dbPath, "%s/../sqlite/database.db", argc ? dirname(argv[0]) : ".");
+  exitCode = sqlite3_open(dbPath, &conn);
   if (exitCode)
   {
     fprintf(stderr, "Connection to database failed\n");
@@ -31,8 +31,8 @@ int main(int argc, char **argv)
   for (i = -500; i <= 500; i++)
   {
     x = (double)i / 100.0;
-    cumulativeD = gaussianCDF(0, 1, x);
-    buffer += sprintf((char *)(query + buffer), "INSERT INTO c_block(z_score, cumulative_distribution) VALUES (%.2f, %f);", x, cumulativeD);
+    prob = gaussianCDF(0, 1, x);
+    buffer += sprintf((char *)(query + buffer), "INSERT INTO c_block(z_score, cumulative_distribution) VALUES (%.2f, %f);", x, prob);
   }
   exitCode = sqlite3_exec(conn, query, 0, 0, &errMsg);
   if (exitCode)
