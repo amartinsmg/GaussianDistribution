@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     exit(-1);
   }
   exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS c_block; CREATE TABLE c_block(id INTEGER PRIMARY KEY "
-                              "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)",
+                                "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)",
                           0, 0, &errMsg);
   if (exitCode)
   {
@@ -40,6 +40,7 @@ int main(int argc, char **argv)
     fprintf(stderr, "%s\n", errMsg);
     exit(-1);
   }
+  free(query);
   sqlite3_close(conn);
   return 0;
 }

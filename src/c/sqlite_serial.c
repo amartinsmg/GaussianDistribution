@@ -10,7 +10,7 @@ int main(int argc, char **argv)
   int exitCode, i;
   double x, cumulativeD;
   char databasePath[300],
-      query[300],
+      query[90],
       *errMsg = NULL;
   sprintf(databasePath, "%s/../sqlite/database.db", argc ? dirname(argv[0]) : ".");
   exitCode = sqlite3_open(databasePath, &conn);
