@@ -9,11 +9,11 @@ LibMySQL_dll="C:/Program Files/MySQL/MySQL Server 8.0/lib/libmysql.dll"
 
 all: c cs java
 
-c: c_sqlite_serial c_sqlite_block c_postgres_serial c_postgres_block c_mysql_serial c_mysql_block
+c: c_sqlite_serial c_sqlite_block c_mysql_serial c_mysql_block c_postgres_serial c_postgres_block
 
-cs: cs_sqlite_serial cs_sqlite_block
+cs: cs_sqlite_serial cs_sqlite_block cs_mysql_serial cs_mysql_block
 
-java: java_sqlite_serial java_sqlite_block
+java: java_sqlite_serial java_sqlite_block java_mysql_serial java_mysql_block
 
 dir:
 	[ -d build ] || mkdir build
@@ -42,11 +42,23 @@ cs_sqlite_serial: dir
 cs_sqlite_block: dir
 	compile_cs.sh src/cs/sqlite_block.cs
 
+cs_mysql_serial: dir
+	compile_cs.sh src/cs/mysql_serial.cs
+
+cs_mysql_block: dir
+	compile_cs.sh src/cs/mysql_block.cs
+
 java_sqlite_serial: dir
 	compile_java.sh --sqlite src/java/SQLite_serial.java
 
 java_sqlite_block: dir
 	compile_java.sh --sqlite src/java/SQLite_block.java
+
+java_mysql_serial: dir
+	compile_java.sh --mysql src/java/MySQL_serial.java
+
+java_mysql_block: dir
+	compile_java.sh --mysql src/java/MySQL_block.java
 
 mysql_dll:
 	cp $(LibMySQL_dll) build
