@@ -2,8 +2,8 @@
 
 include "gaussian.php";
 
-$dbPath = dirname(__FILE__) . "/../../sqlite/database.db";
-$conn = new SQLite3($dbPath);
+$dbPath = sprintf("sqlite:%s/../../sqlite/database.db", dirname(__FILE__));
+$conn = new PDO($dbPath);
 $query = "";
 $conn->exec("DROP TABLE IF EXISTS php_block; CREATE TABLE php_block(id INTEGER PRIMARY KEY 
 AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
@@ -15,4 +15,3 @@ for ($i = -500; $i <= 500; $i++) {
 }
 
 $conn->exec($query);
-$conn->close();
