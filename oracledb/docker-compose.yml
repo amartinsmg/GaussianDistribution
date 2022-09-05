@@ -4,9 +4,9 @@ services:
     image: oracle/database:21.3.0-xe
     restart: always
     environment:
-      ORACLE_PWD: root123
+      ORACLE_PWD: Root1234
     ports:
       - "1521:1521"
     volumes:
-      - ./data:/opt/oracle/oradata/
+      - ./data:/opt/oracle/oradata/XE
 
