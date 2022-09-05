@@ -1,11 +1,12 @@
 from gaussian import gaussianCDF
-import os
-import sqlite3
+from os.path import dirname
+from sqlite3 import connect
 
-dbPath = os.path.dirname(__file__) + '/../../sqlite/database.db'
+dbPath = dirname(__file__) + '/../../sqlite/database.db'
 query = ''
-conn = sqlite3.connect(dbPath)
-conn.executescript('''DROP TABLE IF EXISTS py_block; CREATE TABLE py_block(id INTEGER PRIMARY KEY
+conn = connect(dbPath)
+cur = conn.cursor()
+cur.executescript('''DROP TABLE IF EXISTS py_block; CREATE TABLE py_block(id INTEGER PRIMARY KEY
 AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);''')
 
 for i in range(-500, 501):
@@ -13,6 +14,5 @@ for i in range(-500, 501):
 	prob = gaussianCDF(0, 1, x)
 	query += f'INSERT INTO py_block(z_score, cumulative_distribution) VALUES ({x:.2f}, {prob:.6f});'
 
-conn.executescript(query)
-conn.commit()
+cur.executescript(query)
 conn.close()
