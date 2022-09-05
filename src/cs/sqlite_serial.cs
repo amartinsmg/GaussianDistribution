@@ -10,10 +10,10 @@ namespace Calc
     {
       SQLiteConnection conn;
       SQLiteCommand cmd;
-      string dbPath = AppDomain.CurrentDomain.BaseDirectory + "../sqlite/database.db";
+      string dbPath = $"URI=file:{AppDomain.CurrentDomain.BaseDirectory}../sqlite/database.db";
       int i;
       double x, prob;
-      conn = new SQLiteConnection($"URI=file:{dbPath}");
+      conn = new SQLiteConnection(dbPath);
       CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
       conn.Open();
       cmd = new SQLiteCommand(conn);

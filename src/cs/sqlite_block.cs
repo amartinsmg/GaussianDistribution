@@ -11,11 +11,11 @@ namespace Calc
       SQLiteConnection conn;
       SQLiteCommand cmd;
       string query = "",
-        dbPath = AppDomain.CurrentDomain.BaseDirectory + "../sqlite/database.db";
+        dbPath = $"URI=file:{AppDomain.CurrentDomain.BaseDirectory}../sqlite/database.db";
       int i;
       double x, prob;
       CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
-      conn = new SQLiteConnection($"URI=file:{dbPath}");
+      conn = new SQLiteConnection(dbPath);
       conn.Open();
       cmd = new SQLiteCommand(conn);
       cmd.CommandText = "DROP TABLE IF EXISTS cs_block; CREATE TABLE cs_block(id INTEGER PRIMARY KEY " +
