@@ -12,5 +12,3 @@
 | MariaDB block        | 0.317s      | 0.355s           | 0.366s          | 4.383s            | 5.083s                | 5.248s        |
 | PostgreSQL serial    |             |                  |                 |                   |                       |               |
 | PostgreSQL block     |             |                  |                 |                   |                       |               |
-| MS SQL Server serial |             |                  |                 |                   |                       |               |
-| MS SQL Server block  |             |                  |                 |                   |                       |               |
