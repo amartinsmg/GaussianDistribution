@@ -10,21 +10,12 @@ namespace Calc
     {
       MySqlConnection conn;
       MySqlCommand cmd;
-      MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
-      {
-        Server = "localhost",
-        Database = "gaussian",
-        UserID = "root",
-        Password = "root123",
-        SslMode = MySqlSslMode.Required,
-      };
       int i;
       double x, prob;
       CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
       try
-      {
-        
-        conn = new MySqlConnection(builder.ConnectionString);
+      {        
+        conn = new MySqlConnection("server=localhost;userid=root;password=root123;database=gaussian");
         conn.Open();
         cmd = conn.CreateCommand();
         cmd.CommandText = "DROP TABLE IF EXISTS cs_serial; CREATE TABLE cs_serial(id INTEGER AUTO_INCREMENT " +
