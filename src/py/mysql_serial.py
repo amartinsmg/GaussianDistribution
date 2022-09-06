@@ -8,6 +8,7 @@ try:
 		password="root123",
 		database="gaussian",
 	)
+	conn.autocommit = True
 	cur = conn.cursor()
 	cur.execute('''DROP TABLE IF EXISTS py_serial; CREATE TABLE py_serial(id INTEGER AUTO_INCREMENT
 	PRIMARY KEY, z_score FLOAT NOT NULL, cumulative_distribution FLOAT NOT NULL);''')
