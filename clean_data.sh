@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm -rf sqlite/database.db postgres/data mysql/data oracledb/data mssql/data
+rm -rf postgres/data mysql/data oracledb/data mssql/data
