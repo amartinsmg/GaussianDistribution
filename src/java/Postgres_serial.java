@@ -13,7 +13,7 @@ public class Postgres_serial {
       conn = DriverManager.getConnection("jdbc:postgresql://localhost/gaussian", "root", "root123");
       stmt = conn.createStatement();
       stmt.executeUpdate("DROP TABLE IF EXISTS java_serial; CREATE TABLE java_serial(id SERIAL " +
-      "PRIMARY KEY, z_score FLOAT NOT NULL, cumulative_distribution FLOAT NOT NULL)");
+      "PRIMARY KEY, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
       for (i = -500; i <= 500; i++) {
         x = (double) i / 100.0;
         prob = Gaussian.gaussianCDF(0, 1, x);
