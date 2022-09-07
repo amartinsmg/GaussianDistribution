@@ -12,7 +12,7 @@ sqlite3 database.db .databases
 cd $POSTGRES_DIR
 docker compose create
 
-cd $MSSQL_DIR
+cd $MYSQL_DIR
 docker compose create
 
 cd $MARIADB_DIR
