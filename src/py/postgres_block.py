@@ -11,7 +11,7 @@ try:
 	)
 	cur = conn.cursor()
 	cur.execute('''DROP TABLE IF EXISTS py_block; CREATE TABLE py_block(id SERIAL PRIMARY KEY,
-	z_score FLOAT NOT NULL, cumulative_distribution FLOAT NOT NULL);''')
+	z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);''')
 
 	for i in range(-500, 501):
 		x = i / 100
