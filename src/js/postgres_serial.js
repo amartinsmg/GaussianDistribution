@@ -1,10 +1,10 @@
 const { gaussianCDF } = require("./gaussian"),
-  pg = require("pg");
+  { Pool } = require("pg");
 
-async function main() {
+void (async function () {
   let pool, conn;
   try {
-    pool = new pg.Pool({
+    pool = new Pool({
       host: "localhost",
       database: "gaussian",
       user: "root",
@@ -28,6 +28,4 @@ async function main() {
   } catch (err) {
     console.log(err.message);
   }
-}
-
-main();
+})();
