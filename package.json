@@ -15,6 +15,7 @@
   "homepage": "https://github.com/amartinsmg/GaussianDistribution#readme",
   "dependencies": {
     "mysql2": "^2.3.3",
+    "pg": "^8.8.0",
     "sqlite3": "^5.0.11"
   }
 }
