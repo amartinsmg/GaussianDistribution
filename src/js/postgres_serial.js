@@ -24,7 +24,7 @@ async function main() {
         )});`
       );
     }
-    conn.query("SELECT version", () => conn.end());
+    conn.query("SELECT version()", () => conn.end());
   } catch (err) {
     console.log(err.message);
   }
