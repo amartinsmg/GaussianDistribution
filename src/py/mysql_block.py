@@ -12,7 +12,7 @@ try:
   conn.autocommit = True
   cur = conn.cursor()
   cur.execute('''DROP TABLE IF EXISTS py_block; CREATE TABLE py_block(id INTEGER AUTO_INCREMENT
-  PRIMARY KEY, z_score FLOAT NOT NULL, cumulative_distribution FLOAT NOT NULL);''')
+  PRIMARY KEY, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);''')
   for i in range(-500, 501):
     x = i / 100
     prob = gaussianCDF(0, 1, x)
