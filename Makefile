@@ -11,9 +11,9 @@ all: c cs java
 
 c: c_sqlite_serial c_sqlite_block c_mysql_serial c_mysql_block c_postgres_serial c_postgres_block
 
-cs: cs_sqlite_serial cs_sqlite_block cs_mysql_serial cs_mysql_block
+cs: cs_sqlite_serial cs_sqlite_block cs_mysql_serial cs_mysql_block cs_postgres_serial cs_postgres_block
 
-java: java_sqlite_serial java_sqlite_block java_mysql_serial java_mysql_block
+java: java_sqlite_serial java_sqlite_block java_mysql_serial java_mysql_block java_postgres_serial java_postgres_block
 
 dir:
 	[ -d build ] || mkdir build
@@ -48,6 +48,12 @@ cs_mysql_serial: dir
 cs_mysql_block: dir
 	compile_cs.sh src/cs/mysql_block.cs
 
+cs_postgres_serial: dir
+	compile_cs.sh src/cs/postgres_serial.cs
+
+cs_postgres_block: dir
+	compile_cs.sh src/cs/postgres_block.cs
+
 java_sqlite_serial: dir
 	compile_java.sh --sqlite src/java/SQLite_serial.java
 
@@ -59,6 +65,12 @@ java_mysql_serial: dir
 
 java_mysql_block: dir
 	compile_java.sh --mysql src/java/MySQL_block.java
+
+java_postgres_serial: dir
+	compile_java.sh --postgres src/java/Postgres_serial.java
+
+java_postgres_block: dir
+	compile_java.sh --postgres src/java/Postgres_block.java
 
 mysql_dll:
 	cp $(LibMySQL_dll) build
