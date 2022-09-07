@@ -8,6 +8,7 @@ JAVAFILE=$(echo $2 | sed 's/src\/java\///g')
 CLASS=$(echo $JAVAFILE | sed 's/\.java//g')
 OUTPUT="$(echo $CLASS | tr '[:upper:]' '[:lower:]').jar"
 SQLITE_JDBC="$LIBS_DIR/sqlite-jdbc-3.36.0.3.jar"
+POSTGRES_JDBC="$LIBS_DIR/postgresql-42.5.0.jar"
 MYSQL_JDBC="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.30.jar"
 
 mkdir $TMP_DIR
@@ -33,6 +34,20 @@ case $1 in
   "--mysql")
     cd $TMP_DIR
     unzip -uo "$MYSQL_JDBC"
+    cd $BUILD_DIR
+    jar -cfe $OUTPUT $CLASS -C $TMP_DIR .
+    rm -rf $TMP_DIR
+  ;;
+
+  "--postgres")
+    if [ ! -f "$POSTGRES_JDBC" ]
+    then
+      [ -d $LIBS_DIR ] || mkdir $LIBS_DIR
+      cd $LIBS_DIR
+      curl -LO https://jdbc.postgresql.org/download/postgresql-42.5.0.jar
+    fi
+    cd $TMP_DIR
+    unzip -uo $POSTGRES_JDBC
     cd $BUILD_DIR
     jar -cfe $OUTPUT $CLASS -C $TMP_DIR .
     rm -rf $TMP_DIR

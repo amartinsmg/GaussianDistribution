@@ -13,6 +13,7 @@ then
   dotnet new console
   dotnet add package System.Data.Sqlite
   dotnet add package MySqlConnector
+  dotnet add package Npgsql
   cp $GAUSSIAN_SRC_FILE ./
 else
   cd $DOTNETPROJ_DIR
