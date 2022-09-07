@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     exit(-1);
   }
   exitCode = mysql_query(conn, "DROP TABLE IF EXISTS c_block; CREATE TABLE c_block(id INTEGER AUTO_INCREMENT "
-                               "PRIMARY KEY, z_score FLOAT NOT NULL, cumulative_distribution FLOAT NOT NULL)");
+                               "PRIMARY KEY, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
   if (exitCode)
   {
     fprintf(stderr, "%s\n", mysql_error(conn));
