@@ -7,8 +7,7 @@ try {
     conn = new sqlite3.Database(dbPath);
   conn.exec(
     "DROP TABLE IF EXISTS js_block; CREATE TABLE js_block(id INTEGER PRIMARY KEY " +
-      "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);",
-    callback
+      "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);"
   );
   for (let i = -500; i <= 500; i++) {
     let x = i / 100,
