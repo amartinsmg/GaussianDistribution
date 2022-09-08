@@ -7,7 +7,6 @@ try {
   $conn = new PDO($dbPath);
   $conn->exec("DROP TABLE IF EXISTS php_serial; CREATE TABLE php_serial(id INTEGER PRIMARY KEY 
   AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
-  
   for ($i = -500; $i <= 500; $i++) {
     $x = $i / 100;
     $prob = gaussianCDF(0, 1, $x);
