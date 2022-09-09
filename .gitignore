@@ -1,7 +1,7 @@
 .vscode
 __pycache__
 build
-data
+db
 dotnetProj
 include
 libs
