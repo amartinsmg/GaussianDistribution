@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     fprintf(stderr, "Connection to database failed\n");
     exit(-1);
   }
-  exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS c_block; CREATE TABLE c_block(id INTEGER PRIMARY KEY "
+  exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS tb_c_block; CREATE TABLE tb_c_block(id INTEGER PRIMARY KEY "
                                 "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)",
                           0, 0, &errMsg);
   if (exitCode)
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
   {
     x = (double)i / 100.0;
     prob = gaussianCDF(0, 1, x);
-    buffer += sprintf((char *)(query + buffer), "INSERT INTO c_block(z_score, cumulative_distribution) VALUES (%.2f, %f);", x, prob);
+    buffer += sprintf((char *)(query + buffer), "INSERT INTO tb_c_block(z_score, cumulative_distribution) VALUES (%.2f, %f);", x, prob);
   }
   exitCode = sqlite3_exec(conn, query, 0, 0, &errMsg);
   if (exitCode)

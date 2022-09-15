@@ -16,7 +16,7 @@ int main(int argc, char **argv)
             PQerrorMessage(conn));
     exit(-1);
   }
-  res = PQexec(conn, "DROP TABLE IF EXISTS c_serial; CREATE TABLE c_serial(id SERIAL PRIMARY KEY, "
+  res = PQexec(conn, "DROP TABLE IF EXISTS tb_c_serial; CREATE TABLE tb_c_serial(id SERIAL PRIMARY KEY, "
                      "z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
   if (PQresultStatus(res) != PGRES_COMMAND_OK)
   {
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
   {
     x = (double)i / 100.0;
     prob = gaussianCDF(0, 1, x);
-    sprintf(query, "INSERT INTO c_serial(z_score, cumulative_distribution) VALUES (%.2f, %f)", x, prob);
+    sprintf(query, "INSERT INTO tb_c_serial(z_score, cumulative_distribution) VALUES (%.2f, %f)", x, prob);
     res = PQexec(conn, query);
     if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {

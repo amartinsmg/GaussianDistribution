@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     fprintf(stderr, "Connection to database failed: %s\n", mysql_error(conn));
     exit(-1);
   }
-  exitCode = mysql_query(conn, "DROP TABLE IF EXISTS c_serial; CREATE TABLE c_serial(id INTEGER AUTO_INCREMENT "
+  exitCode = mysql_query(conn, "DROP TABLE IF EXISTS tb_c_serial; CREATE TABLE tb_c_serial(id INTEGER AUTO_INCREMENT "
                                "PRIMARY KEY, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
   if (exitCode)
   {
@@ -26,7 +26,7 @@ int main(int argc, char **argv)
   {
     x = (double)i / 100.0;
     prob = gaussianCDF(0, 1, x);
-    sprintf(query, "INSERT INTO c_serial(z_score, cumulative_distribution) VALUES (%.2f, %f)", x, prob);
+    sprintf(query, "INSERT INTO tb_c_serial(z_score, cumulative_distribution) VALUES (%.2f, %f)", x, prob);
     exitCode = mysql_query(conn, query);
     if (exitCode)
     {
