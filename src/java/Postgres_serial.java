@@ -12,12 +12,12 @@ public class Postgres_serial {
     try {
       conn = DriverManager.getConnection("jdbc:postgresql://localhost/gaussian", "root", "root123");
       stmt = conn.createStatement();
-      stmt.executeUpdate("DROP TABLE IF EXISTS java_serial; CREATE TABLE java_serial(id SERIAL " +
+      stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_serial; CREATE TABLE tb_java_serial(id SERIAL " +
       "PRIMARY KEY, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
       for (i = -500; i <= 500; i++) {
         x = (double) i / 100.0;
         prob = Gaussian.gaussianCDF(0, 1, x);
-        query = String.format("INSERT INTO java_serial(z_score, cumulative_distribution) VALUES (%.2f, %f);", x, prob);
+        query = String.format("INSERT INTO tb_java_serial(z_score, cumulative_distribution) VALUES (%.2f, %f);", x, prob);
         stmt.executeUpdate(query);
       }
     } catch (Exception e) {
