@@ -10,5 +10,5 @@
 | MySQL block       | 0.419s      | 0.435s           | 0.345s          | 9.469s            | 9.651s                | 9.975s        |
 | MariaDB serial    | 7.739s      | 7.076s           | 6.126s          | 6.044s            | 6.881s                | 6.419s        |
 | MariaDB block     | 0.317s      | 0.355s           | 0.366s          | 4.383s            | 4.995s                | 5.248s        |
-| PostgreSQL serial | 7.900s      | 10.053s          | 7.444s          | 7.583s            | 8.071s                | 8.603s        |
-| PostgreSQL block  | 0.244s      | 0.394s           | 0.808s          | 0.973s            | 0.566s                | 1.081s        |
+| PostgreSQL serial | 7.900s      | 8.175s           | 7.444s          | 7.583s            | 8.071s                | 8.603s        |
+| PostgreSQL block  | 0.244s      | 0.651s           | 0.808s          | 0.973s            | 0.566s                | 1.081s        |
