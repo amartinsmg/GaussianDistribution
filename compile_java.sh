@@ -7,8 +7,11 @@ TMP_DIR="$BUILD_DIR/tmp"
 JAVAFILE=$(echo $2 | sed 's/src\/java\///g')
 CLASS=$(echo $JAVAFILE | sed 's/\.java//g')
 OUTPUT="$(echo $CLASS | tr '[:upper:]' '[:lower:]').jar"
+# Location of the SQLite connector for Java. Visit: https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
 SQLITE_JDBC="$LIBS_DIR/sqlite-jdbc-3.36.0.3.jar"
+# Location of the PostgtreSQL connector for Java. Visit: https://jdbc.postgresql.org/
 POSTGRES_JDBC="$LIBS_DIR/postgresql-42.5.0.jar"
+# Location of the MySQL connector for Java. Visit: https://dev.mysql.com/downloads/connector/j/
 MYSQL_JDBC="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.30.jar"
 
 mkdir "$TMP_DIR"
