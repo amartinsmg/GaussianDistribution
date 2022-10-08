@@ -1,10 +1,18 @@
+# C compiler
 CC=gcc
+# Location of the SQLite C header files. Visit: https://www.sqlite.org/download.html
 IncludeSQLite_path=-I"include"
+# Location of the SQLite object files library. Visit: https://www.sqlite.org/download.html
 LibSQLite_path=-L"libs"
+# Location of the Postgres C header files. Visit: https://www.postgresql.org/docs/9.1/libpq.html
 IncludePostgres_path=-I"C:/Program Files/PostgreSQL/14/include"
+# Location of the Postgres object files library. Visit: https://www.postgresql.org/docs/9.1/libpq.html
 LibPostgres_path=-L"C:/Program Files/PostgreSQL/14/lib"
+# Location of the MySQL C header files. Visit: https://dev.mysql.com/doc/dev/mysql-server/latest/dir_d44c64559bbebec7f509842c48db8b23.html
 IncludeMySQL_path=-I"C:/Program Files/MySQL/MySQL Server 8.0/include"
+# Location of the MySQL object files library. Visit: https://dev.mysql.com/downloads/c-api/
 LibMySQL_path=-L"C:/Program Files/MySQL/MySQL Server 8.0/lib"
+# Location of the MySQL dinamic-link library for Windows. Visit: https://dev.mysql.com/downloads/c-api/
 LibMySQL_dll="C:/Program Files/MySQL/MySQL Server 8.0/lib/libmysql.dll"
 
 all: c cs java
