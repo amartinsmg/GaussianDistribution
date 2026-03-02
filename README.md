@@ -1,14 +1,83 @@
 # GaussianDistribution
 
-It's a personal project for a distribution calculator program. It was made in different languages and using distinct databases. Each language has a program for each database. Each of them uses a function that calculates the approximation of the normal cumulative distribution function (CDF) using this Taylor series approximation:
+GaussianDistribution is an exploratory multi-language project created to experiment with:
+
+- Different programming languages
+- Different database engines
+- Distinct database access strategies (serial vs block inserts)
+- Runtime and driver behavior
+- Development experience across ecosystems
+
+This project **does not aim to provide a rigorous or production-grade benchmark**.  
+Instead, it was built as a hands-on laboratory to better understand how different stacks behave under similar workloads.
+
+---
+
+## Project Overview
+
+Each implementation:
+
+1. Computes the Normal Cumulative Distribution Function (CDF) using a Taylor series approximation.
+2. Generates values for `x` in the range `[-5.00, 5.00]`.
+3. Inserts the results into a database table.
+4. Measures total execution time.
+
+The approximation used is:
 
 $$
 P(X \le x) = \frac{1}{2} + \frac{1}{\sqrt{2 \pi}} e^{\frac{1}{2}(\frac{x - \mu}{\sigma})^2} \cdot \sum_{n = 0}^{\infty}{\frac{1}{1 \cdot 3 \cdot 5 ... (2n + 1)}x^{2n+1}}
 $$
 
-The main objective of this project is to observe the difference in syntax and runtime of each programming language and the difference in runtime for each database connection.
+Each language has implementations targeting multiple databases and using different write patterns.
 
-### Compilers and Runtime Environment
+---
+
+## Languages Used
+
+- [C](src/c/)
+- [C#](src/cs/)
+- [Java](src/java/)
+- [JavaScript](src/js/)
+- [PHP](src/php/)
+- [Python](src/py/)
+
+This project was also an exercise in learning and exploring languages beyond my primary stack, implementing equivalent logic across ecosystems and understanding their runtime characteristics.
+
+---
+
+## Databases Tested
+
+- SQLite
+- MySQL
+- MariaDB
+- PostgreSQL
+
+Database environments, except SQLite, are containerized using Docker.
+
+---
+
+## Insert Strategies
+
+Two main database access patterns were tested:
+
+### Serial Insert
+
+- One `INSERT` per loop iteration
+- Multiple roundtrips to the database
+- Higher driver and network overhead
+
+### Block Insert
+
+- Multiple `INSERT` statements concatenated and executed at once
+- Single roundtrip
+- Lower overhead
+- Highlights the impact of driver and database parsing behavior
+
+The goal was to observe the performance differences between these approaches across languages and database engines.
+
+---
+
+## Runtime Environment
 
 | Language              | Compiler or RE                |
 | --------------------- | ----------------------------- |
@@ -19,7 +88,9 @@ The main objective of this project is to observe the difference in syntax and ru
 | [PHP](src/php/)       | Zend Engine 4.1.9             |
 | [Python](src/py)      | CPython 3.10.6                |
 
-### Average Runtime
+---
+
+## Average Runtime
 
 |                   | [C](src/c/) | [Python](src/py) | [PHP](src/php/) | [Java](src/java/) | [JavaScript](src/js/) | [C#](src/cs/) |
 | ----------------- | ----------- | ---------------- | --------------- | ----------------- | --------------------- | ------------- |
@@ -32,26 +103,83 @@ The main objective of this project is to observe the difference in syntax and ru
 | PostgreSQL serial | 7.900s      | 8.175s           | 7.444s          | 7.583s            | 8.071s                | 8.603s        |
 | PostgreSQL block  | 0.244s      | 0.651s           | 0.808s          | 0.973s            | 0.566s                | 1.081s        |
 
-<sup>**Note:** The measurements in this table were performed using the `time` command in a laptop with Windows 10.0.22000, Intel Core i5-8250U and 8 GB of RAM in GNU bash.<sup>
+<sup>Measurements were taken using `time` command in a laptop with Windows 10 (10.0.22000) laptop with Intel Core i5-8250U and 8 GB of RAM using GNU bash.<sup>
 
-All compilable source files can be compiled using this command:
+## Environment & Automation
+
+### Docker
+
+Database instances are containerized using Docker and Docker Compose.
+
+To create the database containers:
+
+```bash
+./create_db.sh
+```
+
+Make sure you have:
+
+- Docker Engine
+- Docker Compose
+- SQLite3 installed
+
+### Build Automation
+
+All compilable source files can be compiled using:
 
 ```sh
 make
 ```
 
-<sup>**Note**: before compiling, open the [Makefile](./Makefile) and [compile_java.sh](./compile_java.sh) and verify if the variables store, respectively, the actual location of the necessary files, as well as make sure you have [GNU Make](https://www.gnu.org/software/make/) and all compilers installed.</sub>
-
-If you want to compile single languages, you can add the file extension after the `make` command, e.g., to compile just the programs written in C, use this command:
+To compile a specific language:
 
 ```sh
 make c
+make java
+make cs
 ```
 
-To create a container for each database, run the command below:
+The build system uses custom automation scripts to:
 
-```sh
-./create_db.sh
-```
+- Compile each language in a standardized way
+- Handle JDBC and database drivers when needed
+- Generate executable JARs (Java)
+- Publish self-contained binaries (.NET)
+- Normalize output artifacts into the build/ directory
 
-<sub>**Note**: before run this command, make sure you have installed the [Docker engine](https://docs.docker.com/engine/install/), the [Docker Compose](https://docs.docker.com/compose/install/) and [SQLite3](https://www.sqlite.org/index.html).</sub>
+Before compiling, verify paths inside:
+
+- `Makefile`
+- `compile_java.sh`
+- `compile_cs.sh`
+
+and ensure all required compilers and runtimes are installed.
+
+---
+
+## Limitations
+
+This project is intentionally simplified and does not simulate real-world production conditions. It does not include:
+
+- Concurrent clients
+- Index tuning
+- Network latency simulation
+- Transaction benchmarking
+- Prepared statement reuse comparisons
+- Production-grade durability configurations
+
+The results reflect controlled local execution under simplified conditions.
+
+---
+
+## Purpose
+
+The main purpose of this repository is exploratory:
+
+- Compare syntax and developer experience across languages
+- Observe runtime differences
+- Compare database driver behavior
+- Understand the impact of serial vs block inserts
+- Explore build systems and containerized environments
+
+It serves as a personal multi-stack laboratory rather than a definitive performance benchmark.
