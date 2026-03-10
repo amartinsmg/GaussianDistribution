@@ -6,19 +6,24 @@
 
 int main(int argc, char **argv)
 {
-  sqlite3 *conn;
-  int exitCode, i,
+  sqlite3 *conn = NULL;
+  int exitCode = -1, i,
       buffer = 0;
   double x, prob;
   char dbPath[300],
       *query = (char *)malloc(90000 * sizeof(*query)),
       *errMsg = NULL;
+  if (query == NULL)
+  {
+    fprintf(stderr, "Failed to allocate query buffer\n");
+    goto cleanup;
+  }
   sprintf(dbPath, "%s/../sqlite/database.db", argc ? dirname(argv[0]) : ".");
   exitCode = sqlite3_open(dbPath, &conn);
   if (exitCode)
   {
     fprintf(stderr, "Connection to database failed\n");
-    exit(-1);
+    goto cleanup;
   }
   exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS tb_c_block; CREATE TABLE tb_c_block(id INTEGER PRIMARY KEY "
                                 "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)",
@@ -26,8 +31,10 @@ int main(int argc, char **argv)
   if (exitCode)
   {
     fprintf(stderr, "%s\n", errMsg);
-    exit(-1);
+    goto cleanup;
   }
+  sqlite3_free(errMsg);
+  errMsg = NULL;
   for (i = -500; i <= 500; i++)
   {
     x = (double)i / 100.0;
@@ -38,9 +45,15 @@ int main(int argc, char **argv)
   if (exitCode)
   {
     fprintf(stderr, "%s\n", errMsg);
-    exit(-1);
+    goto cleanup;
   }
+
+  exitCode = 0;
+
+cleanup:
+  sqlite3_free(errMsg);
   free(query);
-  sqlite3_close(conn);
-  return 0;
+  if (conn != NULL)
+    sqlite3_close(conn);
+  return exitCode;
 }

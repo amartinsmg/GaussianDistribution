@@ -6,23 +6,26 @@
 int main(int argc, char **argv)
 {
   PGconn *conn = PQconnectdb("user=root password=root123 dbname=gaussian");
-  PGresult *res;
+  PGresult *res = NULL;
   int i;
+  int exitCode = -1;
   double x, prob;
   char query[90];
   if (PQstatus(conn) == CONNECTION_BAD)
   {
     fprintf(stderr, "Connection to database failed: %s\n",
             PQerrorMessage(conn));
-    exit(-1);
+    goto cleanup;
   }
   res = PQexec(conn, "DROP TABLE IF EXISTS tb_c_serial; CREATE TABLE tb_c_serial(id SERIAL PRIMARY KEY, "
                      "z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
   if (PQresultStatus(res) != PGRES_COMMAND_OK)
   {
     fprintf(stderr, "%s\n", PQerrorMessage(conn));
-    exit(-1);
+    goto cleanup;
   }
+  PQclear(res);
+  res = NULL;
   for (i = -500; i <= 500; i++)
   {
     x = (double)i / 100.0;
@@ -32,9 +35,16 @@ int main(int argc, char **argv)
     if (PQresultStatus(res) != PGRES_COMMAND_OK)
     {
       fprintf(stderr, "%s\n", PQerrorMessage(conn));
-      exit(-1);
+      goto cleanup;
     }
+    PQclear(res);
+    res = NULL;
   }
+  exitCode = 0;
+
+cleanup:
+  if (res != NULL)
+    PQclear(res);
   PQfinish(conn);
-  return 0;
+  return exitCode;
 }
