@@ -6,8 +6,8 @@
 
 int main(int argc, char **argv)
 {
-  sqlite3 *conn;
-  int exitCode, i;
+  sqlite3 *conn = NULL;
+  int exitCode = -1, i;
   double x, prob;
   char dbPath[300],
       query[90],
@@ -17,7 +17,7 @@ int main(int argc, char **argv)
   if (exitCode)
   {
     fprintf(stderr, "Connection to database failed\n");
-    exit(-1);
+    goto cleanup;
   }
   exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS tb_c_serial; CREATE TABLE tb_c_serial(id INTEGER PRIMARY KEY "
                               "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)",
@@ -25,8 +25,10 @@ int main(int argc, char **argv)
   if (exitCode)
   {
     fprintf(stderr, "%s\n", errMsg);
-    exit(-1);
+    goto cleanup;
   }
+  sqlite3_free(errMsg);
+  errMsg = NULL;
   for (i = -500; i <= 500; i++)
   {
     x = (double)i / 100.0;
@@ -36,9 +38,16 @@ int main(int argc, char **argv)
     if (exitCode)
     {
       fprintf(stderr, "%s\n", errMsg);
-      exit(-1);
+      goto cleanup;
     }
+    sqlite3_free(errMsg);
+    errMsg = NULL;
   }
-  sqlite3_close(conn);
-  return 0;
+  exitCode = 0;
+
+cleanup:
+  sqlite3_free(errMsg);
+  if (conn != NULL)
+    sqlite3_close(conn);
+  return exitCode;
 }
