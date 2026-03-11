@@ -1,7 +1,7 @@
 
 import java.sql.*;
 
-public class MySQL_serial {
+public class MySQLSerial {
 
     public static void main(String[] args) {
         String query;

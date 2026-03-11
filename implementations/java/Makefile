@@ -3,22 +3,22 @@ SQLITE_JDBC=libs/sqlite-jdbc-3.51.2.0.jar
 all: sqlite-serial sqlite-block mysql-serial mysql-block postgres-serial postgres-block
 
 sqlite-serial: dir
-	bash jpack-sqlite.sh SQLite_serial
+	bash jpack-sqlite.sh SQLiteSerial
 
 sqlite-block: dir
-	bash jpack-sqlite.sh SQLite_block
+	bash jpack-sqlite.sh SQLiteBlock
 
 mysql-serial: dir
-	bash jpack-mysql.sh MySQL_serial
+	bash jpack-mysql.sh MySQLSerial
 
 mysql-block: dir
-	bash jpack-mysql.sh MySQL_block
+	bash jpack-mysql.sh MySQLBlock
 
 postgres-serial: dir
-	bash jpack-postgres.sh Postgres_serial
+	bash jpack-postgres.sh PostgresSerial
 
 postgres-block: dir
-	bash jpack-postgres.sh Postgres_block
+	bash jpack-postgres.sh PostgresBlock
 
 dir:
 	mkdir -p out

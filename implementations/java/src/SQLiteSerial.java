@@ -2,11 +2,11 @@
 import java.io.File;
 import java.sql.*;
 
-public class SQLite_serial {
+public class SQLiteSerial {
 
     public static void main(String[] args) {
         String dbPath = String.format("jdbc:sqlite:%s/database.db",
-                new File(SQLite_serial.class.getProtectionDomain().getCodeSource().getLocation().getPath())
+                new File(SQLiteSerial.class.getProtectionDomain().getCodeSource().getLocation().getPath())
                         .getParent());
         String query;
         int i, hash;

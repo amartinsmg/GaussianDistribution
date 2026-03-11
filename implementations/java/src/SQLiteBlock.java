@@ -2,11 +2,11 @@
 import java.io.File;
 import java.sql.*;
 
-public class SQLite_block {
+public class SQLiteBlock {
 
     public static void main(String[] args) {
         String dbPath = String.format("jdbc:sqlite:%s/database.db",
-                new File(SQLite_block.class.getProtectionDomain().getCodeSource().getLocation().getPath())
+                new File(SQLiteBlock.class.getProtectionDomain().getCodeSource().getLocation().getPath())
                         .getParent());
         String query = "INSERT INTO tb_java_block(hash) VALUES ";
         int i, hash;
