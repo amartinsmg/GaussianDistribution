@@ -1,9 +1,9 @@
 .vscode
-__pycache__
 build
+out
+tmp
 db
-dotnetProj
-include
-libs
-node_modules
 *.db
+node_modules
+__pycache__
+libs
