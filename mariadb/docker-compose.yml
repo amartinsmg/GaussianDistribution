@@ -5,7 +5,7 @@ services:
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: root123
-      MARIADB_DATABASE: gaussian
+      MARIADB_DATABASE: hashes
     ports:
       - "3306:3306"
     volumes:

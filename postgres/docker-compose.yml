@@ -6,9 +6,9 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root123
-      POSTGRES_DB: gaussian
+      POSTGRES_DB: hashes
     ports:
       - "5432:5432"
     volumes:
-      - ./db:/var/lib/postgresql/data/
+      - ./db:/var/lib/postgresql/
 
