@@ -39,15 +39,6 @@ int main(int argc, char **argv)
   PQclear(res);
   res = NULL;
 
-  res = PQexec(conn, "BEGIN;");
-  if (PQresultStatus(res) != PGRES_COMMAND_OK)
-  {
-    fprintf(stderr, "%s\n", PQerrorMessage(conn));
-    goto cleanup;
-  }
-  PQclear(res);
-  res = NULL;
-
   for (i = 1; i <= N; i++)
   {
     hash = hash32(i);
@@ -58,15 +49,7 @@ int main(int argc, char **argv)
         hash);
   }
 
-  res = PQexec(conn, query);
-  if (PQresultStatus(res) != PGRES_COMMAND_OK)
-  {
-    fprintf(stderr, "%s\n", PQerrorMessage(conn));
-    goto cleanup;
-  }
-  exitCode = 0;
-
-  res = PQexec(conn, "COMMIT;");
+  res = PQexec(conn, "BEGIN;");
   if (PQresultStatus(res) != PGRES_COMMAND_OK)
   {
     fprintf(stderr, "%s\n", PQerrorMessage(conn));
@@ -74,6 +57,24 @@ int main(int argc, char **argv)
   }
   PQclear(res);
   res = NULL;
+
+  res = PQexec(conn, query);
+  if (PQresultStatus(res) != PGRES_COMMAND_OK)
+  {
+    fprintf(stderr, "%s\n", PQerrorMessage(conn));
+    goto cleanup;
+  }
+  PQclear(res);
+  res = NULL;
+
+  res = PQexec(conn, "COMMIT;");
+  if (PQresultStatus(res) != PGRES_COMMAND_OK)
+  {
+    fprintf(stderr, "%s\n", PQerrorMessage(conn));
+    goto cleanup;
+  }
+
+  exitCode = 0;
 
 cleanup:
   free(query);
