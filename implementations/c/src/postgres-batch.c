@@ -29,7 +29,7 @@ int main(int argc, char **argv)
     goto cleanup;
   }
 
-  res = PQexec(conn, "DROP TABLE IF EXISTS tb_c_block; CREATE TABLE tb_c_block"
+  res = PQexec(conn, "DROP TABLE IF EXISTS tb_c_batch; CREATE TABLE tb_c_batch"
                      "(id SERIAL PRIMARY KEY, hash INTEGER NOT NULL)");
   if (PQresultStatus(res) != PGRES_COMMAND_OK)
   {
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     buffer += snprintf(
         (char *)(query + buffer),
         QUERY_SIZE - buffer,
-        "INSERT INTO tb_c_block(hash) VALUES (%d);",
+        "INSERT INTO tb_c_batch(hash) VALUES (%d);",
         hash);
   }
 

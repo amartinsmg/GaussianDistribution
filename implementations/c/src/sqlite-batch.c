@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     goto cleanup;
   }
 
-  exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS tb_c_block; CREATE TABLE tb_c_block(id "
+  exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS tb_c_batch; CREATE TABLE tb_c_batch(id "
                                 "INTEGER PRIMARY KEY AUTOINCREMENT, hash INTEGER NOT NULL)",
                           0, 0, &errMsg);
   if (exitCode)
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     buffer += snprintf(
         (char *)(query + buffer),
         QUERY_SIZE - buffer,
-        "INSERT INTO tb_c_block(hash) VALUES (%d);",
+        "INSERT INTO tb_c_batch(hash) VALUES (%d);",
         hash);
   }
 
