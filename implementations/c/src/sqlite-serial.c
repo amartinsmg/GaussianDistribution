@@ -34,7 +34,7 @@ int main(int argc, char **argv)
   sqlite3_free(errMsg);
   errMsg = NULL;
 
-  for (i = 0; i <= N; i++)
+  for (i = 1; i <= N; i++)
   {
     hash = hash32(i);
     snprintf(query, 90, "INSERT INTO tb_c_serial(hash) VALUES (%d);", hash);
