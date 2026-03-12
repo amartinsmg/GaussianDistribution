@@ -10,7 +10,7 @@ int32_t hash32(int32_t x)
   x ^= x >> 15;
   x *= 0x846ca68d;
   x ^= x >> 16;
-  return x & 0xffffffff;
+  return x;
 }
 
 #endif /*HASH*/
