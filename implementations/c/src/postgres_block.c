@@ -1,28 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <libpq-fe.h>
-#include "gaussian.h"
+#include <hash.h>
+
+#define N 10000
+#define QUERY_SIZE 600000
 
 int main(int argc, char **argv)
 {
-  PGconn *conn = PQconnectdb("user=root password=root123 dbname=gaussian");
+  PGconn *conn = PQconnectdb("host=127.0.0.1 user=root password=root123 dbname=hashes");
   PGresult *res = NULL;
-  int i, buffer = 0, exitCode = -1;
-  double x, prob;
-  char *query = (char *)malloc(90000 * sizeof(*query));
-  if (query == NULL)
+  int32_t i, hash;
+  int buffer = 0,
+      exitCode = -1;
+  char *query = malloc(QUERY_SIZE * sizeof(*query));
+
+  if (!query)
   {
     fprintf(stderr, "Failed to allocate query buffer\n");
     goto cleanup;
   }
+
   if (PQstatus(conn) == CONNECTION_BAD)
   {
     fprintf(stderr, "Connection to database failed: %s\n",
             PQerrorMessage(conn));
     goto cleanup;
   }
-  res = PQexec(conn, "DROP TABLE IF EXISTS tb_c_block; CREATE TABLE tb_c_block(id SERIAL PRIMARY KEY, "
-                     "z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
+
+  res = PQexec(conn, "DROP TABLE IF EXISTS tb_c_block; CREATE TABLE tb_c_block"
+                     "(id SERIAL PRIMARY KEY, hash INTEGER NOT NULL)");
   if (PQresultStatus(res) != PGRES_COMMAND_OK)
   {
     fprintf(stderr, "%s\n", PQerrorMessage(conn));
@@ -30,12 +38,26 @@ int main(int argc, char **argv)
   }
   PQclear(res);
   res = NULL;
-  for (i = -500; i <= 500; i++)
+
+  res = PQexec(conn, "BEGIN;");
+  if (PQresultStatus(res) != PGRES_COMMAND_OK)
   {
-    x = (double)i / 100.0;
-    prob = gaussianCDF(0, 1, x);
-    buffer += sprintf((char *)(query + buffer), "INSERT INTO tb_c_block(z_score, cumulative_distribution) VALUES (%.2f, %f);", x, prob);
+    fprintf(stderr, "%s\n", PQerrorMessage(conn));
+    goto cleanup;
   }
+  PQclear(res);
+  res = NULL;
+
+  for (i = 1; i <= N; i++)
+  {
+    hash = hash32(i);
+    buffer += snprintf(
+        (char *)(query + buffer),
+        QUERY_SIZE - buffer,
+        "INSERT INTO tb_c_block(hash) VALUES (%d);",
+        hash);
+  }
+
   res = PQexec(conn, query);
   if (PQresultStatus(res) != PGRES_COMMAND_OK)
   {
@@ -44,10 +66,21 @@ int main(int argc, char **argv)
   }
   exitCode = 0;
 
+  res = PQexec(conn, "COMMIT;");
+  if (PQresultStatus(res) != PGRES_COMMAND_OK)
+  {
+    fprintf(stderr, "%s\n", PQerrorMessage(conn));
+    goto cleanup;
+  }
+  PQclear(res);
+  res = NULL;
+
 cleanup:
-  if (res != NULL)
-    PQclear(res);
   free(query);
-  PQfinish(conn);
+  if (res)
+    PQclear(res);
+  if (conn)
+    PQfinish(conn);
+
   return exitCode;
 }
