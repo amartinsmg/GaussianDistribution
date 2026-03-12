@@ -2,18 +2,18 @@
 import java.io.File;
 import java.sql.*;
 
-public class SQLiteBlock {
+public class SQLiteBatch {
 
     public static void main(String[] args) {
         String dbPath = String.format("jdbc:sqlite:%s/database.db",
-                new File(SQLiteBlock.class.getProtectionDomain().getCodeSource().getLocation().getPath())
+                new File(SQLiteBatch.class.getProtectionDomain().getCodeSource().getLocation().getPath())
                         .getParent());
         StringBuilder sb = new StringBuilder();
         String query;
         int i, hash;
         try (Connection conn = DriverManager.getConnection(dbPath); Statement stmt = conn.createStatement();) {
-            stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_block;"
-                    + "CREATE TABLE tb_java_block"
+            stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_batch;"
+                    + "CREATE TABLE tb_java_batch"
                     + "(id INTEGER AUTO_INCREMENT PRIMARY KEY,"
                     + " hash INTEGER NOT NULL)");
 
@@ -21,7 +21,7 @@ public class SQLiteBlock {
 
             for (i = 1; i <= 10000; i++) {
                 hash = Hash.hash32(i);
-                sb.append(String.format("INSERT INTO tb_java_block(hash) VALUES (%d);", hash));
+                sb.append(String.format("INSERT INTO tb_java_batch(hash) VALUES (%d);", hash));
             }
 
             query = sb.toString();

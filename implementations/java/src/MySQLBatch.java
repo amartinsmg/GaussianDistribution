@@ -1,7 +1,7 @@
 
 import java.sql.*;
 
-public class PostgresBlock {
+public class MySQLBatch {
 
     public static void main(String[] args) {
         StringBuilder sb = new StringBuilder();
@@ -9,22 +9,22 @@ public class PostgresBlock {
         int i, hash;
         try (
             Connection conn = DriverManager.getConnection(
-                    "jdbc:postgresql://127.0.0.1:5432/hashes",
+                    "jdbc:mysql://127.0.0.1:3306/hashes?allowMultiQueries=true",
                     "root",
                     "root123"
             );
             Statement stmt = conn.createStatement();
-        ){
-            stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_block;"
-                    + "CREATE TABLE tb_java_block"
-                    + "(id SERIAL PRIMARY KEY,"
+        ) {
+            stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_batch;"
+                    + "CREATE TABLE tb_java_batch"
+                    + "(id INTEGER AUTO_INCREMENT PRIMARY KEY,"
                     + " hash INTEGER NOT NULL)");
 
             conn.setAutoCommit(false);
 
             for (i = 1; i <= 10000; i++) {
                 hash = Hash.hash32(i);
-                sb.append(String.format("INSERT INTO tb_java_block(hash) VALUES (%d);", hash));
+                sb.append(String.format("INSERT INTO tb_java_batch(hash) VALUES (%d);", hash));
             }
 
             query = sb.toString();
