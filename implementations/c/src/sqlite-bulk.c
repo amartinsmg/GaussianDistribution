@@ -56,7 +56,25 @@ int main(int argc, char **argv)
 
   query[buffer - 1] = '\0';
 
+  exitCode = sqlite3_exec(conn, "BEGIN;", 0, 0, &errMsg);
+  if (exitCode)
+  {
+    fprintf(stderr, "%s\n", errMsg);
+    goto cleanup;
+  }
+  sqlite3_free(errMsg);
+  errMsg = NULL;
+
   exitCode = sqlite3_exec(conn, query, 0, 0, &errMsg);
+  if (exitCode)
+  {
+    fprintf(stderr, "%s\n", errMsg);
+    goto cleanup;
+  }
+  sqlite3_free(errMsg);
+  errMsg = NULL;
+
+  exitCode = sqlite3_exec(conn, "COMMIT;", 0, 0, &errMsg);
   if (exitCode)
   {
     fprintf(stderr, "%s\n", errMsg);
