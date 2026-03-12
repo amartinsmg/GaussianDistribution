@@ -21,8 +21,8 @@ int main(int argc, char **argv)
     goto cleanup;
   }
 
-  res = PQexec(conn, "DROP TABLE IF EXISTS tb_c_serial; CREATE TABLE tb_c_serial(id "
-                     "SERIAL PRIMARY KEY, hash INTEGER NOT NULL)");
+  res = PQexec(conn, "DROP TABLE IF EXISTS tb_c_serial; CREATE TABLE tb_c_serial "
+                     "(id SERIAL PRIMARY KEY, hash INTEGER NOT NULL)");
   if (PQresultStatus(res) != PGRES_COMMAND_OK)
   {
     fprintf(stderr, "%s\n", PQerrorMessage(conn));

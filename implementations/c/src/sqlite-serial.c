@@ -23,8 +23,8 @@ int main(int argc, char **argv)
     goto cleanup;
   }
 
-  exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS tb_c_serial; CREATE TABLE tb_c_serial(id "
-                                "INTEGER PRIMARY KEY AUTOINCREMENT, hash INTEGER NOT NULL)",
+  exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS tb_c_serial; CREATE TABLE tb_c_serial "
+                                "(id INTEGER PRIMARY KEY AUTOINCREMENT, hash INTEGER NOT NULL)",
                           0, 0, &errMsg);
   if (exitCode)
   {
