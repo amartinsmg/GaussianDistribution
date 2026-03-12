@@ -1,32 +1,38 @@
 #include <stdio.h>
 #include <libgen.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <sqlite3.h>
-#include "gaussian.h"
+#include <hash.h>
+
+#define N 10000
+#define QUERY_SIZE 600000
 
 int main(int argc, char **argv)
 {
   sqlite3 *conn = NULL;
-  int exitCode = -1, i,
+  int32_t i, hash;
+  int exitCode = -1,
       buffer = 0;
-  double x, prob;
-  char dbPath[300],
-      *query = (char *)malloc(90000 * sizeof(*query)),
-      *errMsg = NULL;
-  if (query == NULL)
+  char *dbPath = "database.db",
+       *query = malloc(QUERY_SIZE * sizeof(*query)),
+       *errMsg = NULL;
+
+  if (!query)
   {
     fprintf(stderr, "Failed to allocate query buffer\n");
     goto cleanup;
   }
-  sprintf(dbPath, "%s/../sqlite/database.db", argc ? dirname(argv[0]) : ".");
+
   exitCode = sqlite3_open(dbPath, &conn);
   if (exitCode)
   {
     fprintf(stderr, "Connection to database failed\n");
     goto cleanup;
   }
-  exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS tb_c_block; CREATE TABLE tb_c_block(id INTEGER PRIMARY KEY "
-                                "AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)",
+
+  exitCode = sqlite3_exec(conn, "DROP TABLE IF EXISTS tb_c_block; CREATE TABLE tb_c_block(id "
+                                "INTEGER PRIMARY KEY AUTOINCREMENT, hash INTEGER NOT NULL)",
                           0, 0, &errMsg);
   if (exitCode)
   {
@@ -35,12 +41,26 @@ int main(int argc, char **argv)
   }
   sqlite3_free(errMsg);
   errMsg = NULL;
-  for (i = -500; i <= 500; i++)
+
+  exitCode = sqlite3_exec(conn, "BEGIN;", 0, 0, &errMsg);
+  if (exitCode)
   {
-    x = (double)i / 100.0;
-    prob = gaussianCDF(0, 1, x);
-    buffer += sprintf((char *)(query + buffer), "INSERT INTO tb_c_block(z_score, cumulative_distribution) VALUES (%.2f, %f);", x, prob);
+    fprintf(stderr, "%s\n", errMsg);
+    goto cleanup;
   }
+  sqlite3_free(errMsg);
+  errMsg = NULL;
+
+  for (i = 0; i <= N; i++)
+  {
+    hash = hash32(i);
+    buffer += snprintf(
+        (char *)(query + buffer),
+        QUERY_SIZE - buffer,
+        "INSERT INTO tb_c_block(hash) VALUES (%d);",
+        hash);
+  }
+
   exitCode = sqlite3_exec(conn, query, 0, 0, &errMsg);
   if (exitCode)
   {
@@ -48,12 +68,22 @@ int main(int argc, char **argv)
     goto cleanup;
   }
 
+  exitCode = sqlite3_exec(conn, "COMMIT;", 0, 0, &errMsg);
+  if (exitCode)
+  {
+    fprintf(stderr, "%s\n", errMsg);
+    goto cleanup;
+  }
+  sqlite3_free(errMsg);
+  errMsg = NULL;
+
   exitCode = 0;
 
 cleanup:
-  sqlite3_free(errMsg);
   free(query);
-  if (conn != NULL)
+  sqlite3_free(errMsg);
+  if (conn)
     sqlite3_close(conn);
+
   return exitCode;
 }
