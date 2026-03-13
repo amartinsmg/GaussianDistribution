@@ -9,9 +9,9 @@ try:
     cur = conn.cursor()
     cur.executescript(
         """DROP TABLE IF EXISTS tb_py_serial;
-                CREATE TABLE tb_py_serial
-                (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                hash INTEGER NOT NULL);"""
+        CREATE TABLE tb_py_serial
+        (id INTEGER PRIMARY KEY AUTOINCREMENT,
+        hash INTEGER NOT NULL);"""
     )
 
     for i in range(1, 10_001):
