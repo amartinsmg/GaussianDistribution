@@ -1,18 +1,26 @@
 <?php
 
-include "gaussian.php";
+include "hashes.php";
 
 try {
-  $dbPath = sprintf("sqlite:%s/../../sqlite/database.db", dirname(__FILE__));
-  $conn = new PDO($dbPath);
-  $conn->exec("DROP TABLE IF EXISTS tb_php_serial; CREATE TABLE tb_php_serial(id INTEGER PRIMARY KEY 
-  AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
-  for ($i = -500; $i <= 500; $i++) {
-    $x = $i / 100;
-    $prob = gaussianCDF(0, 1, $x);
-    $query = sprintf("INSERT INTO tb_php_serial(z_score, cumulative_distribution) VALUES (%.2f, %f);", $x, $prob);
-    $conn->exec($query);
-  }
+    $dbPath = sprintf("sqlite:%s/../database.db", dirname(__FILE__));
+    $conn = new PDO($dbPath);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $conn->exec(<<<HEREA
+            DROP TABLE IF EXISTS tb_php_serial;
+            CREATE TABLE tb_php_serial
+            (id INTEGER PRIMARY KEY AUTOINCREMENT,
+            hash INTEGER NULL);
+            HEREA);
+
+    for ($i = 1; $i <= 10000; $i++) {
+        $hash = hash32($i);
+        $query = sprintf("INSERT INTO tb_php_serial(hash) VALUES (%d);", $hash);
+        $conn->query($query);
+    }
 } catch (\Throwable $th) {
-  echo $th->getMessage();
+    echo $th->getMessage() . "\n";
+} finally {
+    $conn = null;
 }
