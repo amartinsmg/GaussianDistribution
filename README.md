@@ -43,7 +43,6 @@ int32_t hash32(int32_t x) {
 
 - [C](implementations/c/)
 - [Java](implementations/java/)
-- [JavaScript](implementations/js/)
 - [PHP](implementations/php/)
 - [Python](implementations/py/)
 
@@ -86,28 +85,27 @@ The purpose of comparing these approaches is to observe how database engines, dr
 
 ## Runtime Environment
 
-| Language   | Compiler or RE |
-| ---------- | -------------- |
-| C          | GNU C Compiler |
-| Java       | Java RE        |
-| JavaScript | Node           |
-| PHP        | Zend Engine    |
-| Python     | CPython        |
+| Language | Compiler or RE |
+| -------- | -------------- |
+| C        | GNU C Compiler |
+| Java     | Java RE        |
+| PHP      | Zend Engine    |
+| Python   | CPython        |
 
 ---
 
 ## Average Runtime
 
-|                   | C   | Python | PHP | Java | JavaScript |
-| ----------------- | --- | ------ | --- | ---- | ---------- |
-| SQLite serial     | s   | s      | s   | s    | s          |
-| SQLite block      | s   | s      | s   | s    | s          |
-| MySQL serial      | s   | s      | s   | s    | s          |
-| MySQL block       | s   | s      | s   | s    | s          |
-| MariaDB serial    | s   | s      | s   | s    | s          |
-| MariaDB block     | s   | s      | s   | s    | s          |
-| PostgreSQL serial | s   | s      | s   | s    | s          |
-| PostgreSQL block  | s   | s      | s   | s    | s          |
+|                   | C   | Python | PHP | Java |
+| ----------------- | --- | ------ | --- | ---- |
+| SQLite serial     | s   | s      | s   | s    |
+| SQLite block      | s   | s      | s   | s    |
+| MySQL serial      | s   | s      | s   | s    |
+| MySQL block       | s   | s      | s   | s    |
+| MariaDB serial    | s   | s      | s   | s    |
+| MariaDB block     | s   | s      | s   | s    |
+| PostgreSQL serial | s   | s      | s   | s    |
+| PostgreSQL block  | s   | s      | s   | s    |
 
 <sup>Measurements were taken using `time` command in a laptop with Windows 10 (10.0.22000) laptop with Intel Core i5-8250U and 8 GB of RAM using GNU bash.<sup>
 
