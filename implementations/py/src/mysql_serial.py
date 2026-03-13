@@ -1,23 +1,27 @@
-from gaussian import gaussianCDF
+from hashes import hash32
 from mysql.connector import connect
 
 try:
-	conn = connect(
-		host="localhost",
-		user="root",
-		password="root123",
-		database="gaussian",
-	)
-	conn.autocommit = True
-	cur = conn.cursor()
-	cur.execute('''DROP TABLE IF EXISTS tb_py_serial; CREATE TABLE tb_py_serial(id INTEGER AUTO_INCREMENT
-	PRIMARY KEY, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);''')
-	for i in range(-500, 501):
-		x = i / 100
-		prob = gaussianCDF(0, 1, x)
-		conn.next_result()
-		cur.execute(
-			f'INSERT INTO tb_py_serial(z_score, cumulative_distribution) VALUES ({x:.2f}, {prob:.6f})')
-	conn.close()
+    with connect(
+        host="127.0.0.1",
+        user="root",
+        password="root123",
+        database="hashes",
+        autocommit=True,
+    ) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """DROP TABLE IF EXISTS tb_py_serial;
+                CREATE TABLE tb_py_serial
+                (id SERIAL PRIMARY KEY,
+                hash INTEGER NOT NULL);"""
+            )
+            conn.next_result()
+
+            for i in range(1, 10_001):
+                hash = hash32(i)
+                cur.execute("INSERT INTO tb_py_serial(hash) VALUES (%s)", (hash,))
+                conn.next_result()
+
 except Exception as e:
-	print(e)
+    print(e)
