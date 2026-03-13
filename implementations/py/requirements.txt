@@ -1,6 +1,7 @@
 mysql==0.0.3
-pathlib==1.0.1
-psycopg2==2.9.11
 mysql-connector-python==9.6.0
 mysqlclient==2.2.8
+pathlib==1.0.1
+psycopg==3.3.3
+psycopg-binary==3.3.3
 typing_extensions==4.15.0
