@@ -1,12 +1,12 @@
 from hashes import hash32
-from psycopg2 import connect
+from psycopg import connect
 
 try:
     with connect(
         host="127.0.0.1",
         user="root",
         password="root123",
-        database="hashes",
+        dbname="hashes",
     ) as conn:
         with conn.cursor() as cur:
             cur.execute(

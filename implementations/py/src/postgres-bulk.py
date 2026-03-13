@@ -1,12 +1,12 @@
 from hashes import hash32
-from psycopg2 import connect
+from psycopg import connect
 
 try:
     with connect(
         host="127.0.0.1",
         user="root",
         password="root123",
-        database="hashes",
+        dbname="hashes",
     ) as conn:
         with conn.cursor() as cur:
             cur.execute(
@@ -22,13 +22,8 @@ try:
                 hash = hash32(i)
                 buf.append(f"({hash})")
 
-            query = (
-                "BEGIN;\nINSERT INTO tb_py_bulk(hash) VALUES "
-                + ",".join(buf)
-                + ";\nCOMMIT;"
-            )
+            query = "\nINSERT INTO tb_py_bulk(hash) VALUES " + ",".join(buf)
             cur.execute(query)
 
 except Exception as e:
     print(e)
-
