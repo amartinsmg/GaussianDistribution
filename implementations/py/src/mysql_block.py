@@ -1,24 +1,31 @@
-from gaussian import gaussianCDF
+from hashes import hash32
 from mysql.connector import connect
 
-query = ''
 try:
-  conn = connect(
-    host="localhost",
-    user="root",
-    password="root123",
-    database="gaussian",
-  )
-  conn.autocommit = True
-  cur = conn.cursor()
-  cur.execute('''DROP TABLE IF EXISTS tb_py_block; CREATE TABLE tb_py_block(id INTEGER AUTO_INCREMENT
-  PRIMARY KEY, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);''')
-  for i in range(-500, 501):
-    x = i / 100
-    prob = gaussianCDF(0, 1, x)
-    query += f'INSERT INTO tb_py_block(z_score, cumulative_distribution) VALUES ({x:.2f}, {prob:.6f});'
-  conn.next_result()
-  cur.execute(query)
-  conn.close()
+    conn=None
+    with connect(
+        host="127.0.0.1",
+        user="root",
+        password="root123",
+        database="hashes",
+    ) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """DROP TABLE IF EXISTS tb_py_batch;
+                CREATE TABLE tb_py_batch
+                (id SERIAL PRIMARY KEY,
+                hash INTEGER NOT NULL);"""
+            )
+            conn.next_result()
+            conn.commit()
+
+            inserts = []
+            for i in range(1, 10_001):
+                hash = hash32(i)
+                inserts.append(f"INSERT INTO tb_py_batch(hash) VALUES ({hash});")
+
+            query = "BEGIN;\n" + "\n".join(inserts) + "\nCOMMIT;"
+            cur.execute(query)
+
 except Exception as e:
-	print(e)
+    print(e)
