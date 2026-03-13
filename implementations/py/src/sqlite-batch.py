@@ -14,12 +14,12 @@ try:
         hash INTEGER NOT NULL);"""
     )
 
-    inserts = []
+    buf = []
     for i in range(1, 10_001):
         hash = hash32(i)
-        inserts.append(f"INSERT INTO tb_py_batch(hash) VALUES ({hash});")
+        buf.append(f"INSERT INTO tb_py_batch(hash) VALUES ({hash});")
 
-    query = "BEGIN;\n" + "\n".join(inserts) + "\nCOMMIT;"
+    query = "BEGIN;\n" + "\n".join(buf) + "\nCOMMIT;"
     cur.executescript(query)
 
 except Exception as e:

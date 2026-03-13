@@ -17,14 +17,14 @@ try:
             )
             conn.commit()
 
-            inserts = []
+            buf = []
             for i in range(1, 10_001):
                 hash = hash32(i)
-                inserts.append(f"({hash})")
+                buf.append(f"({hash})")
 
             query = (
                 "BEGIN;\nINSERT INTO tb_py_bulk(hash) VALUES "
-                + ",".join(inserts)
+                + ",".join(buf)
                 + ";\nCOMMIT;"
             )
             cur.execute(query)
