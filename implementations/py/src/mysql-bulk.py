@@ -2,7 +2,6 @@ from hashes import hash32
 from mysql.connector import connect
 
 try:
-    conn = None
     with connect(
         host="127.0.0.1",
         user="root",
