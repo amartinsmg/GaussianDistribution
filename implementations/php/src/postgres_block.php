@@ -1,18 +1,29 @@
 <?php
 
-include "gaussian.php";
+include "hashes.php";
 
 try {
-  $conn = new PDO("pgsql:host=localhost;port=5432;dbname=gaussian", "root", "root123");
-  $query = "";
-  $conn->exec("DROP TABLE IF EXISTS tb_php_block; CREATE TABLE tb_php_block(id SERIAL PRIMARY KEY, 
-  z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL)");
-  for ($i = -500; $i <= 500; $i++) {
-    $x = $i / 100;
-    $prob = gaussianCDF(0, 1, $x);
-    $query .= sprintf("INSERT INTO tb_php_block(z_score, cumulative_distribution) VALUES (%.2f, %f);", $x, $prob);
-  }
-  $conn->exec($query);
+    $conn = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=hashes", "root", "root123");
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $conn->exec(<<<HEREA
+            DROP TABLE IF EXISTS tb_php_batch;
+            CREATE TABLE tb_php_batch
+            (id SERIAL PRIMARY KEY,
+            hash INTEGER NULL);
+            HEREA);
+    $query = "";
+
+    for ($i = 1; $i <= 10000; $i++) {
+        $hash = hash32($i);
+        $query .= sprintf("INSERT INTO tb_php_batch(hash) VALUES (%d); ", $hash);
+    }
+
+    $conn->beginTransaction();
+    $conn->exec($query);
+    $conn->commit();
 } catch (\Throwable $th) {
-  echo $th->getMessage();
+    echo $th->getMessage() . "\n";
+} finally {
+    $conn = null;
 }
