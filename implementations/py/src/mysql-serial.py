@@ -13,7 +13,7 @@ try:
             cur.execute(
                 """DROP TABLE IF EXISTS tb_py_serial;
                 CREATE TABLE tb_py_serial
-                (id SERIAL PRIMARY KEY,
+                (id INTEGER AUTO_INCREMENT PRIMARY KEY,
                 hash INTEGER NOT NULL);"""
             )
             conn.next_result()

@@ -12,7 +12,7 @@ try:
             cur.execute(
                 """DROP TABLE IF EXISTS tb_py_bulk;
                 CREATE TABLE tb_py_bulk
-                (id SERIAL PRIMARY KEY,
+                (id INTEGER AUTO_INCREMENT PRIMARY KEY,
                 hash INTEGER NOT NULL);"""
             )
             conn.next_result()
