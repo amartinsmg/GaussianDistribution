@@ -1,22 +1,27 @@
-from gaussian import gaussianCDF
-from os.path import dirname
+from hashes import hash32
+from pathlib import Path
 from sqlite3 import connect
 
-dbPath = dirname(__file__) + '/../../sqlite/database.db'
-query = ''
+dbPath = Path(__file__).parent.parent / "database.db"
 
 try:
-	conn = connect(dbPath)
-	cur = conn.cursor()
-	cur.executescript('''DROP TABLE IF EXISTS tb_py_block; CREATE TABLE tb_py_block(id INTEGER PRIMARY KEY
-	AUTOINCREMENT, z_score REAL NOT NULL, cumulative_distribution REAL NOT NULL);''')
-	conn.commit()
-	for i in range(-500, 501):
-		x = i / 100
-		prob = gaussianCDF(0, 1, x)
-		query += f'INSERT INTO tb_py_block(z_score, cumulative_distribution) VALUES ({x:.2f}, {prob:.6f});'
-	cur.executescript(query)
-	conn.commit()
-	conn.close()
+    conn = connect(dbPath)
+    cur = conn.cursor()
+    cur.executescript(
+        """DROP TABLE IF EXISTS tb_py_batch;
+                CREATE TABLE tb_py_batch
+                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                hash INTEGER NOT NULL);"""
+    )
+
+    inserts = []
+    for i in range(1, 10_001):
+        hash = hash32(i)
+        inserts.append(f"INSERT INTO tb_py_batch(hash) VALUES ({hash});")
+
+    query = "BEGIN;\n" + "\n".join(inserts) + "\nCOMMIT;"
+    cur.executescript(query)
+
 except Exception as e:
-	print(e)
+    print(e)
+
