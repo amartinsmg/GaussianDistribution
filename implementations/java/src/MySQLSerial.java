@@ -15,19 +15,19 @@ public class MySQLSerial {
             PreparedStatement ps = conn.prepareStatement(
                 "INSERT INTO tb_java_serial(hash) VALUES (?)"
             );
-		) {
-			stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_serial;"
-					+ "CREATE TABLE tb_java_serial "
-					+ "(id INTEGER AUTO_INCREMENT PRIMARY KEY, "
-					+ "hash INTEGER NOT NULL)");
+        ) {
+            stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_serial;"
+                    + "CREATE TABLE tb_java_serial "
+                    + "(id INTEGER AUTO_INCREMENT PRIMARY KEY, "
+                    + "hash INTEGER NOT NULL)");
 
-			for (i = 1; i <= 10000; i++) {
-				hash = Hash.hash32(i);
-				ps.setInt(1, hash);
+            for (i = 1; i <= 10000; i++) {
+                hash = Hash.hash32(i);
+                ps.setInt(1, hash);
                 ps.executeUpdate();
-			}
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 }
