@@ -4,8 +4,6 @@ import java.sql.*;
 public class PostgresBatch {
 
     public static void main(String[] args) {
-        StringBuilder sb = new StringBuilder();
-        String query;
         int i, hash;
         try (
             Connection conn = DriverManager.getConnection(
@@ -14,7 +12,10 @@ public class PostgresBatch {
                     "root123"
             );
             Statement stmt = conn.createStatement();
-        ){
+            PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO tb_java_batch(hash) VALUES (?)"
+            );
+        ) {
             stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_batch;"
                     + "CREATE TABLE tb_java_batch"
                     + "(id SERIAL PRIMARY KEY,"
@@ -24,12 +25,11 @@ public class PostgresBatch {
 
             for (i = 1; i <= 10000; i++) {
                 hash = Hash.hash32(i);
-                sb.append(String.format("INSERT INTO tb_java_batch(hash) VALUES (%d);", hash));
+                ps.setInt(1, hash);
+                ps.addBatch();
             }
 
-            query = sb.toString();
-
-            stmt.execute(query);
+            ps.executeBatch();
 
             conn.commit();
 

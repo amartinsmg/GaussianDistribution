@@ -4,7 +4,6 @@ import java.sql.*;
 public class PostgresSerial {
 
     public static void main(String[] args) {
-        String query;
         int i, hash;
         try (
             Connection conn = DriverManager.getConnection(
@@ -13,7 +12,10 @@ public class PostgresSerial {
                 "root123"
                 );
             Statement stmt = conn.createStatement();
-        ) {
+            PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO tb_java_serial(hash) VALUES (?)"
+            );
+		) {
 			stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_serial;"
 					+ "CREATE TABLE tb_java_serial "
 					+ "(id SERIAL PRIMARY KEY, "
@@ -21,12 +23,11 @@ public class PostgresSerial {
 
 			for (i = 1; i <= 10000; i++) {
 				hash = Hash.hash32(i);
-				query = String.format("INSERT INTO tb_java_serial(hash) VALUES (%d)", hash);
-				stmt.executeUpdate(query);
+				ps.setInt(1, hash);
+                ps.executeUpdate();
 			}
-
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
     }
 }

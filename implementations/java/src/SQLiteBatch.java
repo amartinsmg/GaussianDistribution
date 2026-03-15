@@ -8,25 +8,28 @@ public class SQLiteBatch {
         String dbPath = String.format("jdbc:sqlite:%s/database.db",
                 new File(SQLiteBatch.class.getProtectionDomain().getCodeSource().getLocation().getPath())
                         .getParent());
-        StringBuilder sb = new StringBuilder();
-        String query;
         int i, hash;
-        try (Connection conn = DriverManager.getConnection(dbPath); Statement stmt = conn.createStatement();) {
+        try (
+            Connection conn = DriverManager.getConnection(dbPath);
+            Statement stmt = conn.createStatement();
+            PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO tb_java_batch(hash) VALUES (?)"
+            );
+        ) {
             stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_batch;"
                     + "CREATE TABLE tb_java_batch"
-                    + "(id INTEGER AUTO_INCREMENT PRIMARY KEY,"
+                    + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + " hash INTEGER NOT NULL)");
 
             conn.setAutoCommit(false);
 
             for (i = 1; i <= 10000; i++) {
                 hash = Hash.hash32(i);
-                sb.append(String.format("INSERT INTO tb_java_batch(hash) VALUES (%d);", hash));
+                ps.setInt(1, hash);
+                ps.addBatch();
             }
 
-            query = sb.toString();
-
-            stmt.execute(query);
+            ps.executeBatch();
 
             conn.commit();
 
@@ -35,3 +38,4 @@ public class SQLiteBatch {
         }
     }
 }
+

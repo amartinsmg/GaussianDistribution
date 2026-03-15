@@ -4,15 +4,17 @@ import java.sql.*;
 public class MySQLSerial {
 
     public static void main(String[] args) {
-        String query;
         int i, hash;
         try (
-		Connection conn = DriverManager.getConnection(
-				"jdbc:mysql://127.0.0.1:3306/hashes?allowMultiQueries=true",
-				"root",
-				"root123"
-		);
-		Statement stmt = conn.createStatement();
+            Connection conn = DriverManager.getConnection(
+                    "jdbc:mysql://127.0.0.1:3306/hashes?allowMultiQueries=true",
+                    "root",
+                    "root123"
+            );
+            Statement stmt = conn.createStatement();
+            PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO tb_java_serial(hash) VALUES (?)"
+            );
 		) {
 			stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_serial;"
 					+ "CREATE TABLE tb_java_serial "
@@ -21,10 +23,9 @@ public class MySQLSerial {
 
 			for (i = 1; i <= 10000; i++) {
 				hash = Hash.hash32(i);
-				query = String.format("INSERT INTO tb_java_serial(hash) VALUES (%d)", hash);
-				stmt.executeUpdate(query);
+				ps.setInt(1, hash);
+                ps.executeUpdate();
 			}
-
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
