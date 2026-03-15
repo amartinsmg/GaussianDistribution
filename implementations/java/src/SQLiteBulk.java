@@ -15,7 +15,7 @@ public class SQLiteBulk {
         try (Connection conn = DriverManager.getConnection(dbPath); Statement stmt = conn.createStatement();) {
             stmt.executeUpdate("DROP TABLE IF EXISTS tb_java_bulk;"
                     + "CREATE TABLE tb_java_bulk"
-                    + "(id INTEGER AUTO_INCREMENT PRIMARY KEY,"
+                    + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + " hash INTEGER NOT NULL)");
 
             conn.setAutoCommit(false);
