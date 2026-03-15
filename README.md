@@ -1,6 +1,6 @@
-# HashWorkloadDBTest
+# HashInsertBenchmark
 
-**Hash Workload DB Test** is an exploratory multi-language project created to experiment with:
+**Hash Insert Benchmark** is an exploratory multi-language project created to experiment with:
 
 - Different programming languages
 - Different database engines
